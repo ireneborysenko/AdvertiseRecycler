@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AdvertiseRecycler</string>
+    <string name="app_title">Iryna Borysenko</string>
+    <string name="show_reward">Show Reward</string>
 </resources>
