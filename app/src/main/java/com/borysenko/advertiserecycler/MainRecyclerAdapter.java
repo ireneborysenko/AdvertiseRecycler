@@ -73,7 +73,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    static class AdViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    static class AdViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.ad_title) TextView mAdTitle;
         @BindView(R.id.ad_text) TextView mAdText;
@@ -81,15 +81,10 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         AdViewHolder(View v) {
             super(v);
-            v.setOnClickListener(this);
             ButterKnife.bind(this, v);
         }
-
-        @Override
-        public void onClick(View v) {
-
-        }
     }
+
 
     MainRecyclerAdapter(List<MessageType> messages, Context context) {
         mMessages = messages;
@@ -104,6 +99,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         void onItemClick(String companionMessage);
         void onAdButtonClick();
     }
+
 
     @Override
     public int getItemViewType(int position) {
@@ -141,48 +137,58 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         switch (getItemViewType(i)) {
             case USER_MESSAGE_TYPE:
-                UserViewHolder userViewHolder = (UserViewHolder) viewHolder;
-                MessageType userMessage = mMessages.get(i);
-                userViewHolder.mUserMessage.setText(((UserMessage) userMessage).getUserMessage());
-                userViewHolder.mUserDate.setText(((UserMessage) userMessage).getUserDate());
-
-                RequestOptions userOptions = new RequestOptions()
-                        .skipMemoryCache(false);
-
-                Glide.with(mContext)
-                        .load(R.drawable.ic_user)
-                        .apply(userOptions)
-                        .into(userViewHolder.mUserIcon);
+                fillUserMessage(viewHolder, i);
                 break;
-
             case COMPANION_MESSAGE_TYPE:
-                CompanionViewHolder companionViewHolder = (CompanionViewHolder) viewHolder;
-                MessageType companionMessage = mMessages.get(i);
-                companionViewHolder.mCompanionMessage.setText(((CompanionMessage) companionMessage)
-                        .getCompanionMessage());
-                companionViewHolder.mCompanionDate.setText(((CompanionMessage) companionMessage)
-                        .getCompanionDate());
-                RequestOptions options = new RequestOptions()
-                        .skipMemoryCache(false);
-
-                Glide.with(mContext)
-                        .load(R.drawable.ic_companion)
-                        .apply(options)
-                        .into(companionViewHolder.mCompanionIcon);
+                fillCompanionMessage(viewHolder, i);
                 break;
-
             case AD_MESSAGE_TYPE:
-                AdViewHolder adViewHolder = (AdViewHolder) viewHolder;
-                MessageType adMessage = mMessages.get(i);
-                adViewHolder.mAdTitle.setText(((AdMessage) adMessage).getAdTitle());
-                adViewHolder.mAdText.setText(((AdMessage) adMessage).getAdText());
-                adViewHolder.mAdButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        clickListener.onAdButtonClick();
-                    }
-                });
+                fillAdMessage(viewHolder, i);
                 break;
         }
+    }
+
+    private void fillUserMessage(RecyclerView.ViewHolder viewHolder, int i) {
+        UserViewHolder userViewHolder = (UserViewHolder) viewHolder;
+        MessageType userMessage = mMessages.get(i);
+        userViewHolder.mUserMessage.setText(((UserMessage) userMessage).getUserMessage());
+        userViewHolder.mUserDate.setText(((UserMessage) userMessage).getUserDate());
+
+        RequestOptions userOptions = new RequestOptions()
+                .skipMemoryCache(false);
+
+        Glide.with(mContext)
+                .load(R.drawable.ic_user)
+                .apply(userOptions)
+                .into(userViewHolder.mUserIcon);
+    }
+
+    private void fillCompanionMessage(RecyclerView.ViewHolder viewHolder, int i) {
+        CompanionViewHolder companionViewHolder = (CompanionViewHolder) viewHolder;
+        MessageType companionMessage = mMessages.get(i);
+        companionViewHolder.mCompanionMessage.setText(((CompanionMessage) companionMessage)
+                .getCompanionMessage());
+        companionViewHolder.mCompanionDate.setText(((CompanionMessage) companionMessage)
+                .getCompanionDate());
+        RequestOptions options = new RequestOptions()
+                .skipMemoryCache(false);
+
+        Glide.with(mContext)
+                .load(R.drawable.ic_companion)
+                .apply(options)
+                .into(companionViewHolder.mCompanionIcon);
+    }
+
+    private void fillAdMessage(RecyclerView.ViewHolder viewHolder, int i) {
+        AdViewHolder adViewHolder = (AdViewHolder) viewHolder;
+        MessageType adMessage = mMessages.get(i);
+        adViewHolder.mAdTitle.setText(((AdMessage) adMessage).getAdTitle());
+        adViewHolder.mAdText.setText(((AdMessage) adMessage).getAdText());
+        adViewHolder.mAdButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickListener.onAdButtonClick();
+            }
+        });
     }
 }
