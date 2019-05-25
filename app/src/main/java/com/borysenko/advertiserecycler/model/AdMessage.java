@@ -16,16 +16,23 @@ public class AdMessage implements MessageType {
         this.adText = adText;
     }
 
-    public String getAdTitle() {
-        return adTitle;
+    @Override
+    public int getItemViewType() {
+        return MessageType.AD_MESSAGE_TYPE;
     }
 
-    public String getAdText() {
+    @Override
+    public String getMessage() {
         return adText;
     }
 
     @Override
-    public int getItemViewType() {
-        return MessageType.AD_MESSAGE_TYPE;
+    public String getTitle() {
+        return adTitle;
+    }
+
+    @Override
+    public String getDate() {
+        return null;
     }
 }

@@ -10,11 +10,6 @@ import com.borysenko.advertiserecycler.model.AdMessage;
 import com.borysenko.advertiserecycler.model.CompanionMessage;
 import com.borysenko.advertiserecycler.model.MessageType;
 import com.borysenko.advertiserecycler.model.UserMessage;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +18,9 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity  implements RewardedVideoAdListener {
+public class MainActivity extends AppCompatActivity{
 
-    private RewardedVideoAd mRewardedVideoAd;
+    private MobileAdsHelper mobileAdsHelper;
 
     @BindView(R.id.main_recycler_view)
     RecyclerView mRecyclerView;
@@ -38,11 +33,8 @@ public class MainActivity extends AppCompatActivity  implements RewardedVideoAdL
 
         ButterKnife.bind(this);
 
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
-
-        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
-        mRewardedVideoAd.setRewardedVideoAdListener(this);
-        loadRewardedVideoAd();
+        mobileAdsHelper = new MobileAdsHelper(this);
+        mobileAdsHelper.initMobileAds();
 
         initMainRecyclerView(fillMessageList());
     }
@@ -74,9 +66,7 @@ public class MainActivity extends AppCompatActivity  implements RewardedVideoAdL
 
             @Override
             public void onAdButtonClick() {
-                if (mRewardedVideoAd.isLoaded()) {
-                    mRewardedVideoAd.show();
-                }
+                mobileAdsHelper.showVideo();
             }
         });
     }
@@ -87,67 +77,21 @@ public class MainActivity extends AppCompatActivity  implements RewardedVideoAdL
         toast.show();
     }
 
-    private void loadRewardedVideoAd() {
-        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
-                new AdRequest.Builder().build());
-    }
-
     @Override
     public void onResume() {
-        mRewardedVideoAd.resume(this);
+        mobileAdsHelper.videoAdResume();
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        mRewardedVideoAd.pause(this);
+        mobileAdsHelper.videoAdPause();
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
-        mRewardedVideoAd.destroy(this);
+        mobileAdsHelper.videoAdDestroy();
         super.onDestroy();
-    }
-
-    @Override
-    public void onRewarded(RewardItem reward) {
-        Toast.makeText(this, "onRewarded! currency: " + reward.getType() + "  amount: " +
-                reward.getAmount(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onRewardedVideoAdLeftApplication() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdClosed() {
-        loadRewardedVideoAd();
-    }
-
-    @Override
-    public void onRewardedVideoAdFailedToLoad(int errorCode) {
-        Toast.makeText(this, "onRewardedVideoAdFailedToLoad", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onRewardedVideoAdLoaded() {
-        Toast.makeText(this, "onRewardedVideoAdLoaded", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onRewardedVideoAdOpened() {
-
-    }
-
-    @Override
-    public void onRewardedVideoStarted() {
-
-    }
-
-    @Override
-    public void onRewardedVideoCompleted() {
-
     }
 }

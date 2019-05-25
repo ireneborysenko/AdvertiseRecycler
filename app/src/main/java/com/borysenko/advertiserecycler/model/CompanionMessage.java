@@ -16,16 +16,23 @@ public class CompanionMessage implements MessageType {
         this.companionDate = companionDate;
     }
 
-    public String getCompanionMessage() {
-        return companionMessage;
-    }
-
-    public String getCompanionDate() {
-        return companionDate;
-    }
-
     @Override
     public int getItemViewType() {
         return MessageType.COMPANION_MESSAGE_TYPE;
+    }
+
+    @Override
+    public String getMessage() {
+        return companionMessage;
+    }
+
+    @Override
+    public String getTitle() {
+        return null;
+    }
+
+    @Override
+    public String getDate() {
+        return companionDate;
     }
 }

@@ -16,16 +16,23 @@ public class UserMessage implements MessageType {
         this.userDate = userDate;
     }
 
-    public String getUserMessage() {
-        return userMessage;
-    }
-
-    public String getUserDate() {
-        return userDate;
-    }
-
     @Override
     public int getItemViewType() {
         return MessageType.USER_MESSAGE_TYPE;
+    }
+
+    @Override
+    public String getMessage() {
+        return userMessage;
+    }
+
+    @Override
+    public String getTitle() {
+        return null;
+    }
+
+    @Override
+    public String getDate() {
+        return userDate;
     }
 }

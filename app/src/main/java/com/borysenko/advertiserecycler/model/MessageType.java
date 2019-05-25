@@ -12,4 +12,10 @@ public interface MessageType {
     int AD_MESSAGE_TYPE = 2;
 
     int getItemViewType();
+
+    String getMessage();
+
+    String getTitle();
+
+    String getDate();
 }

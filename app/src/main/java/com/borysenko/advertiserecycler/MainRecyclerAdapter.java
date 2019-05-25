@@ -9,10 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.borysenko.advertiserecycler.model.AdMessage;
-import com.borysenko.advertiserecycler.model.CompanionMessage;
 import com.borysenko.advertiserecycler.model.MessageType;
-import com.borysenko.advertiserecycler.model.UserMessage;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -49,8 +46,8 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         @Override
         public void onClick(View v) {
-            clickListener.onItemClick(((UserMessage) mMessages.get(getAdapterPosition()))
-                    .getUserMessage());
+            clickListener.onItemClick((mMessages.get(getAdapterPosition()))
+                    .getMessage());
         }
     }
 
@@ -68,8 +65,8 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         @Override
         public void onClick(View v) {
-            clickListener.onItemClick(((CompanionMessage) mMessages.get(getAdapterPosition()))
-                    .getCompanionMessage());
+            clickListener.onItemClick((mMessages.get(getAdapterPosition()))
+                    .getMessage());
         }
     }
 
@@ -151,8 +148,8 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void fillUserMessage(RecyclerView.ViewHolder viewHolder, int i) {
         UserViewHolder userViewHolder = (UserViewHolder) viewHolder;
         MessageType userMessage = mMessages.get(i);
-        userViewHolder.mUserMessage.setText(((UserMessage) userMessage).getUserMessage());
-        userViewHolder.mUserDate.setText(((UserMessage) userMessage).getUserDate());
+        userViewHolder.mUserMessage.setText(userMessage.getMessage());
+        userViewHolder.mUserDate.setText(userMessage.getDate());
 
         RequestOptions userOptions = new RequestOptions()
                 .skipMemoryCache(false);
@@ -166,10 +163,9 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void fillCompanionMessage(RecyclerView.ViewHolder viewHolder, int i) {
         CompanionViewHolder companionViewHolder = (CompanionViewHolder) viewHolder;
         MessageType companionMessage = mMessages.get(i);
-        companionViewHolder.mCompanionMessage.setText(((CompanionMessage) companionMessage)
-                .getCompanionMessage());
-        companionViewHolder.mCompanionDate.setText(((CompanionMessage) companionMessage)
-                .getCompanionDate());
+        companionViewHolder.mCompanionMessage.setText(companionMessage.getMessage());
+        companionViewHolder.mCompanionDate.setText(companionMessage
+                .getDate());
         RequestOptions options = new RequestOptions()
                 .skipMemoryCache(false);
 
@@ -182,8 +178,8 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void fillAdMessage(RecyclerView.ViewHolder viewHolder, int i) {
         AdViewHolder adViewHolder = (AdViewHolder) viewHolder;
         MessageType adMessage = mMessages.get(i);
-        adViewHolder.mAdTitle.setText(((AdMessage) adMessage).getAdTitle());
-        adViewHolder.mAdText.setText(((AdMessage) adMessage).getAdText());
+        adViewHolder.mAdTitle.setText(adMessage.getTitle());
+        adViewHolder.mAdText.setText(adMessage.getMessage());
         adViewHolder.mAdButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
